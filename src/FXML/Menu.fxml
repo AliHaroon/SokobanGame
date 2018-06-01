@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="650.0" prefWidth="1156.0" styleClass="pane" stylesheets="@../Css/style.css" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.MenuController">
+   <children>
+      <AnchorPane layoutX="-1.0" prefHeight="650.0" prefWidth="1156.0">
+         <children>
+            <Label layoutX="505.0" layoutY="103.0" text="Welcome">
+               <font>
+                  <Font size="48.0" />
+               </font>
+            </Label>
+            <ComboBox fx:id="comboBox" layoutX="529.0" layoutY="509.0" prefWidth="150.0" />
+            <Button fx:id="b1" layoutX="562.0" layoutY="568.0" mnemonicParsing="false" prefHeight="33.0" prefWidth="85.0" text="Go" />
+            <ImageView fx:id="image" fitHeight="285.0" fitWidth="333.0" layoutX="437.0" layoutY="185.0" pickOnBounds="true" smooth="false">
+             <image>
+                 <Image url="@../Images/image1.jpg" />
+             </image>
+            </ImageView>
+         </children></AnchorPane>
+   </children>
+</Pane>
