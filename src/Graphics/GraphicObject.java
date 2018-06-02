@@ -4,7 +4,9 @@ import engine.GameEngine;
 import engine.GameObject;
 import javafx.animation.FadeTransition;
 import javafx.animation.Timeline;
+import javafx.scene.Node;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Rectangle;
@@ -14,45 +16,45 @@ import javafx.util.Duration;
  * GraphicObject is used to populate the game grid.
  * It creates {@link Rectangle} from {@link GameObject}.
  */
-public class GraphicObject extends Rectangle {
+public class GraphicObject {
 
-   public GraphicObject(GameObject obj) {
-        Paint color;
-        switch (obj) {
+
+    public ImageView putObject(GameObject object){
+        Image image;
+        ImageView iv1;
+        switch (object) {
             case WALL:
-               color = Color.BLACK;
-                break;
+                image = new Image("Images/wall.png");
+                iv1 = new ImageView(image);
+                return iv1;
+
+
 
             case CRATE:
-                color = Color.ORANGE;
-                break;
+                image = new Image("Images/crate.png");
+                iv1= new ImageView(image);
+                return iv1;
+
 
             case DIAMOND:
-                color = Color.DEEPSKYBLUE;
-
-                // TODO: fix memory leak.
-                if (GameEngine.isDebugActive()) {
-                    FadeTransition ft = new FadeTransition(Duration.millis(1000), this);
-                    ft.setFromValue(1.0);
-                    ft.setToValue(0.2);
-                    ft.setCycleCount(Timeline.INDEFINITE);
-                    ft.setAutoReverse(true);
-                    ft.play();
-                }
-
-                break;
+                image = new Image("Images/daimond.png");
+                iv1= new ImageView(image);
+                return iv1;
 
             case KEEPER:
-                color = Color.RED;
-                break;
+                image = new Image("Images/keeper.png");
+                iv1= new ImageView(image);
+                return iv1;
 
             case FLOOR:
-                color = Color.WHITE;
-                break;
+                image = new Image("Images/floor.png");
+                iv1= new ImageView(image);
+                return iv1;
 
             case CRATE_ON_DIAMOND:
-                color = Color.DARKCYAN;
-                break;
+                image = new Image("Images/crateD.png");
+                iv1 = new ImageView(image);
+                return iv1;
 
             default:
                 String message = "Error in Level constructor. Object not recognized.";
@@ -60,20 +62,6 @@ public class GraphicObject extends Rectangle {
                 throw new AssertionError(message);
         }
 
-
-       this.setFill(color);
-       this.setHeight(30);
-       this.setWidth(30);
-
-        if (obj != GameObject.WALL) {
-            this.setArcHeight(50);
-            this.setArcWidth(50);
-        }
-
-        if (GameEngine.isDebugActive()) {
-            this.setStroke(Color.RED);
-            this.setStrokeWidth(0.25);
-        }
     }
 
 }

@@ -4,11 +4,12 @@ import engine.GameEngine;
 import engine.GameObject;
 import engine.Level;
 import javafx.scene.control.MenuBar;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 import Graphics.GraphicObject;
-
+import javafx.scene.image.Image;
 import java.awt.*;
 import java.io.File;
 import java.io.InputStream;
@@ -61,8 +62,12 @@ public class LevelController {
     }
 
     private void addObjectToGrid(GameObject gameObject, Point location) {
-        GraphicObject graphicObject = new GraphicObject(gameObject);
-        gameGrid.add(graphicObject, location.y, location.x);
+        GraphicObject graphicObject = new GraphicObject();
+        ImageView imageView = new ImageView();
+        imageView = graphicObject.putObject(gameObject);
+        gameGrid.setRowIndex(imageView, location.x);
+        gameGrid.setColumnIndex(imageView, location.y);
+        gameGrid.getChildren().add(imageView);
     }
 
 }

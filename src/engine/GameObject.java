@@ -6,11 +6,11 @@ package engine;
  * Each object has a symbol which is used to decode the save files.
  */
 public enum GameObject {
-    WALL('W'),
+    WALL('#'),
     FLOOR(' '),
-    CRATE('C'),
-    DIAMOND('D'),
-    KEEPER('S'),
+    CRATE('$'),
+    DIAMOND('.'),
+    KEEPER('@'),
     CRATE_ON_DIAMOND('O'),
     DEBUG_OBJECT('=');
 
@@ -30,7 +30,7 @@ public enum GameObject {
      */
     public static GameObject fromChar(char c) {
         for (GameObject t : GameObject.values()) {
-            if (Character.toUpperCase(c) == t.symbol) {
+            if (c == t.symbol) {
                 return t;
             }
         }

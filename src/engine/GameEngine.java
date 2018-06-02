@@ -235,36 +235,7 @@ public class GameEngine {
                     }
                     break;
                 }
-
-                // If the line contains the map set name, save it
-                if (line.contains("MapSetName")) {
-                    mapSetName = line.replace("MapSetName: ", "");
-                    continue;
-                }
-
-                // If the line contains the level name, save it
-                if (line.contains("LevelName")) {
-                    // If we already parsed the first level, it means that this is the n+1 level,
-                    // so we can already parse it.
-                    if (parsedFirstLevel) {
-                        Level parsedLevel = new Level(levelName, ++levelIndex, rawLevel);
-                        levels.add(parsedLevel);
-                        rawLevel.clear();
-                    } else {
-                        parsedFirstLevel = true;
-                    }
-
-                    // Get the level name by removing "LevelName:"
-                    levelName = line.replace("LevelName: ", "");
-                    continue;
-                }
-
-                line = line.trim();
-                line = line.toUpperCase();
-                // If the line contains at least 2 WALLS, add it to the list
-                if (line.matches(".*W.*W.*")) {
                     rawLevel.add(line);
-                }
             } // END - While loop
 
         } catch (IOException e) {

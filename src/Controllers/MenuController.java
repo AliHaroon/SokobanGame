@@ -92,7 +92,6 @@ public class MenuController {
             Rectangle2D primScreenBounds = Screen.getPrimary().getVisualBounds();
             PrimaryStage.setX((primScreenBounds.getWidth() - PrimaryStage.getWidth()) / 2);
             PrimaryStage.setY((primScreenBounds.getHeight() - PrimaryStage.getHeight()) / 4);
-
             levelController.loadLevel(PrimaryStage, Level);
         }catch (Exception e){
             e.printStackTrace();
