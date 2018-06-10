@@ -7,22 +7,26 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.ComboBox;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Rectangle;
+import javafx.stage.FileChooser;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 
 import java.awt.event.ActionEvent;
+import java.io.File;
+import java.io.IOException;
+import java.util.Optional;
 
 public class MenuController {
     public static Stage PrimaryStage;
 
-    @FXML
-    private Pane pane;
     ObservableList<String> levels =
             FXCollections.observableArrayList(
                     "Level 1",
@@ -43,27 +47,26 @@ public class MenuController {
     private ImageView image;
     @FXML
     private Button b1;
+    @FXML
+    private Button LeaderBoard;
 
-    public void Show(Stage primaryStage, Pane pane) {
+    public void Show(Stage primaryStage) {
         try {
 
             PrimaryStage = primaryStage;
-            this.pane = pane;
             comboBox.setItems(levels);
             comboBox.getSelectionModel().selectedItemProperty().addListener( (options, oldValue, newValue) -> {
                        SetImage(newValue.toString());
                     }
             );
-
-            Scene scene = new Scene(pane, 1156, 650);
-            primaryStage.setScene(scene);
             primaryStage.show();
             primaryStage.setResizable(false);
             b1.setOnAction(event -> {
                 SelectLevel((String) comboBox.getSelectionModel().getSelectedItem());
             });
+            LeaderBoard.setOnAction(event -> showLeader());
         } catch (Exception e) {
-            e.getMessage();
+            e.printStackTrace();
         }
     }
 
@@ -75,26 +78,49 @@ public class MenuController {
 
     private void SelectLevel(String Level){
         try {
-            //load the FXML loader
             FXMLLoader loader = new FXMLLoader(Main.class.getResource("../FXML/window.fxml"));
-
-            //load into a pane
             Pane pane = loader.load();
-
-            //Controller linker
-            LevelController levelController = loader.getController();
             Scene scene = new Scene(pane);
             scene.getRoot().requestFocus();
-
             PrimaryStage.setScene(scene);
-            PrimaryStage.show();
-            PrimaryStage.setResizable(false);
-            Rectangle2D primScreenBounds = Screen.getPrimary().getVisualBounds();
-            PrimaryStage.setX((primScreenBounds.getWidth() - PrimaryStage.getWidth()) / 2);
-            PrimaryStage.setY((primScreenBounds.getHeight() - PrimaryStage.getHeight()) / 4);
+            LevelController levelController = loader.getController();
             levelController.loadLevel(PrimaryStage, Level);
         }catch (Exception e){
             e.printStackTrace();
         }
     }
+
+
+    public void showLeader(){
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("LeaderBoard");
+        alert.setHeaderText("Do you wish to Load previous game sessions?");
+        alert.setContentText("Make Your choice");
+
+        ButtonType buttonTypeOne = new ButtonType("Yes");
+        ButtonType buttonTypeTwo = new ButtonType("No");
+
+        alert.getButtonTypes().setAll(buttonTypeOne, buttonTypeTwo);
+
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.get() == buttonTypeOne){
+            try {
+                File saveFile;
+                FileChooser fileChooser = new FileChooser();
+                fileChooser.setTitle("Open Save File");
+                fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Sokoban save file", "*.skb"));
+                saveFile = fileChooser.showOpenDialog(PrimaryStage);
+                if (saveFile != null){
+
+                }
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+
+        } else if (result.get() == buttonTypeTwo) {
+
+        }
+
+    }
+
 }

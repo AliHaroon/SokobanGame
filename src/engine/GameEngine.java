@@ -1,14 +1,33 @@
 package engine;
 
+import Controllers.LevelController;
+import Controllers.Main;
+import Controllers.MenuController;
+import javafx.event.EventHandler;
+import javafx.fxml.FXMLLoader;
+import javafx.geometry.Pos;
+import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonBar;
+import javafx.scene.control.ButtonType;
+import javafx.scene.effect.Effect;
 import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
 import javafx.scene.media.MediaPlayer;
+import javafx.scene.text.Text;
+import javafx.scene.text.TextAlignment;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
+import javafx.stage.Window;
 
 import javax.sound.sampled.LineUnavailableException;
 import java.awt.*;
 import java.io.*;
-import java.util.ArrayList;
+import java.util.*;
 import java.util.List;
-import java.util.NoSuchElementException;
 
 /**
  * GameEngine is responsible for handling all the game mechanics.
@@ -18,9 +37,6 @@ import java.util.NoSuchElementException;
  */
 public class GameEngine {
 
-    /**
-     * The repository URL
-     */
     public final static String GitHubURL = "https://github.com/StefanoFrazzetto/NewSokobanFX";
     /**
      * The game name showed in the game dialog
@@ -31,6 +47,10 @@ public class GameEngine {
      */
     public static GameLogger logger;
     /**
+     * The Primary Stage
+     */
+    public Stage primaryStage;
+    /**
      * The game debug mode
      */
     private static boolean debug = false;
@@ -39,14 +59,6 @@ public class GameEngine {
      */
     private Level currentLevel;
     /**
-     * The map set name
-     */
-    private String mapSetName;
-    /**
-     * The list of levels
-     */
-    private List<Level> levels;
-    /**
      * The game state
      */
     private boolean gameComplete = false;
@@ -54,11 +66,18 @@ public class GameEngine {
      * The number of moves
      */
     private int movesCount = 0;
-
+    /**
+     * Name of current level
+     */
+    private String levelName;
     /**
      * The music player
      */
     private MediaPlayer player;
+
+    private LevelController parent;
+
+    private MenuController menu;
 
     /**
      * Uses a {@link File} to load the game map containing all the levels.
@@ -67,12 +86,13 @@ public class GameEngine {
      * @param production true if using the engine in live mode, false
      *                   only for testing mode.
      */
-    public GameEngine(InputStream input, boolean production) {
+    public GameEngine(InputStream input, boolean production, Stage primarystage, LevelController controller) {
         try {
             // Initialize the logger
             logger = new GameLogger();
-            levels = loadGameFile(input);
-            currentLevel = getNextLevel();
+            parent = controller;
+            primaryStage = primarystage;
+            levelName = loadGameFile(input);
 
             if (production) {
                 createPlayer();
@@ -80,9 +100,9 @@ public class GameEngine {
         } catch (IOException x) {
             System.out.println("Cannot create logger.");
         } catch (NoSuchElementException e) {
-            logger.warning("Cannot load the default save file: " + e.getStackTrace());
+            logger.warning("Cannot load the default save file: " + Arrays.toString(e.getStackTrace()));
         } catch (LineUnavailableException e) {
-            logger.warning("Cannot load the music file: " + e.getStackTrace());
+            logger.warning("Cannot load the music file: " + Arrays.toString(e.getStackTrace()));
         }
     }
 
@@ -97,10 +117,6 @@ public class GameEngine {
 
     public int getMovesCount() {
         return movesCount;
-    }
-
-    public String getMapSetName() {
-        return mapSetName;
     }
 
     /**
@@ -196,12 +212,10 @@ public class GameEngine {
         if (keeperMoved) {
             keeperPosition.translate((int) delta.getX(), (int) delta.getY());
             movesCount++;
-            if (currentLevel.isComplete()) {
-                if (isDebugActive()) {
-                    System.out.println("Level complete!");
-                }
-
-                currentLevel = getNextLevel();
+            boolean check = currentLevel.isComplete();
+            if (check) {
+                parent.reloadGrid();
+                showMessage();
             }
         }
     }
@@ -212,30 +226,25 @@ public class GameEngine {
      * @param input - the file containing the levels
      * @return the list containing the levels
      */
-    private List<Level> loadGameFile(InputStream input) {
-        List<Level> levels = new ArrayList<>(5);
-        int levelIndex = 0;
-
+    private String loadGameFile(InputStream input) {
+        String levelName = "";
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(input))) {
-            boolean parsedFirstLevel = false;
             List<String> rawLevel = new ArrayList<>();
-            String levelName = "";
-
             // START - While loop
             while (true) {
                 String line = reader.readLine();
-
                 // Break the loop if EOF is reached
                 if (line == null) {
-                    // If the list size is not equal to zero, it means
-                    // that the last level has not been parsed yet.
                     if (rawLevel.size() != 0) {
-                        Level parsedLevel = new Level(levelName, ++levelIndex, rawLevel);
-                        levels.add(parsedLevel);
+                        currentLevel = new Level(levelName, rawLevel);
                     }
                     break;
                 }
-                    rawLevel.add(line);
+                if (line.contains("Level")){
+                    levelName = line;
+                    continue;
+                }
+                  rawLevel.add(line);
             } // END - While loop
 
         } catch (IOException e) {
@@ -243,8 +252,7 @@ public class GameEngine {
         } catch (NullPointerException e) {
             logger.severe("Cannot open the requested file: " + e);
         }
-
-        return levels;
+        return levelName;
     }
 
     /**
@@ -297,17 +305,19 @@ public class GameEngine {
      *
      * @return the next level loaded from the save file.
      */
-    private Level getNextLevel() {
-        if (currentLevel == null) {
-            return levels.get(0);
-        }
+   private Level getNextLevel(String levelName) {
+       String parts = levelName.substring(levelName.lastIndexOf(" ") + 1);
+       int nextLevel = Integer.parseInt(parts) + 1;
+       String use = "Level " + nextLevel;
+       try {
+          parent.loadLevel(primaryStage,use);
 
-        int currentLevelIndex = currentLevel.getIndex();
-        if (currentLevelIndex < levels.size()) {
-            return levels.get(currentLevelIndex + 1);
-        }
+       }catch (Exception e){
+           e.printStackTrace();
+       }
+       if(nextLevel == 11)
+           gameComplete = true;
 
-        gameComplete = true;
         return null;
     }
 
@@ -325,6 +335,41 @@ public class GameEngine {
      */
     public void toggleDebug() {
         debug = !debug;
+    }
+
+    public void showMessage(){
+        newDialog();
+    }
+
+    private void newDialog() {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Good Job!!");
+        alert.setHeaderText("What do you wish to do ?");
+        alert.setContentText("Choose your option.");
+
+        ButtonType buttonTypeOne = new ButtonType("Back to Menu");
+        ButtonType buttonTypeTwo = new ButtonType("Next Level");
+
+        alert.getButtonTypes().setAll(buttonTypeOne, buttonTypeTwo);
+
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.get() == buttonTypeOne){
+            try {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/FXML/Menu.fxml"));
+                Pane pane = loader.load();
+                Scene scene = new Scene(pane, 1156, 650);
+                scene.getRoot().requestFocus();
+                primaryStage.setScene(scene);
+                MenuController menuController =  (MenuController) loader.getController();
+                menuController.Show(primaryStage);
+            }catch (IOException e){
+                e.printStackTrace();
+            }
+
+        } else if (result.get() == buttonTypeTwo) {
+            getNextLevel(levelName);
+        }
+
     }
 
 }

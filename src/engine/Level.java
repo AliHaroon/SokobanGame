@@ -29,10 +29,6 @@ public final class Level implements Iterable<GameObject> {
      */
     private final GameGrid diamondsGrid;
     /**
-     * The level index
-     */
-    private final int index;
-    /**
      * The total number of diamondsGrid in this level
      */
     private int numberOfDiamonds = 0;
@@ -46,16 +42,14 @@ public final class Level implements Iterable<GameObject> {
      * {@link String}, each one containing the characters corresponding to a specific game object
      *
      * @param levelName  the name of the level
-     * @param levelIndex the number used as index for the levels
      * @param raw_level  the raw data of the level
      */
-    public Level(String levelName, int levelIndex, List<String> raw_level) {
+    public Level(String levelName, List<String> raw_level) {
         if (GameEngine.isDebugActive()) {
-            System.out.printf("[ADDING LEVEL] LEVEL [%d]: %s\n", levelIndex, levelName);
+            System.out.printf("[ADDING LEVEL] LEVEL [%d]: %s\n", levelName);
         }
 
         name = levelName;
-        index = levelIndex;
 
         int rows = raw_level.size();
         // Get the first row, trim it to remove any space before and after it, then get its length.
@@ -90,7 +84,7 @@ public final class Level implements Iterable<GameObject> {
         } // END - List loop
     }
 
-    boolean isComplete() {
+    public boolean isComplete() {
         int cratedDiamondsCount = 0;
         for (int row = 0; row < objectsGrid.ROWS; row++) {
             for (int col = 0; col < objectsGrid.COLUMNS; col++) {
@@ -110,15 +104,6 @@ public final class Level implements Iterable<GameObject> {
      */
     public String getName() {
         return name;
-    }
-
-    /**
-     * Returns the level index
-     *
-     * @return the level index
-     */
-    int getIndex() {
-        return index;
     }
 
     /**
