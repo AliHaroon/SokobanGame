@@ -4,9 +4,9 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.Pane?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onKeyPressed="#OnStartPressed" prefHeight="650.0" prefWidth="1156.0" styleClass="pane" stylesheets="@../Css/style.css" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.WelcomeScreenController">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onKeyPressed="#OnStartPressed" prefHeight="656.0" prefWidth="1156.0" styleClass="pane" stylesheets="@../Css/style.css" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.WelcomeScreenController">
     <children>
-        <ImageView fx:id="image" fitHeight="658.0" fitWidth="1163.0">
+        <ImageView fx:id="image" fitHeight="656.0" fitWidth="1163.0">
             <image>
                 <Image url="@../Images/TitleScreen.jpg" />
             </image>

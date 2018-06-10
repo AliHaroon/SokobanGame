@@ -32,7 +32,7 @@ public class Main extends Application {
             //Show the menu pane
             welcomeScreenController.setStage(PrimaryStage);
 
-            Scene scene = new Scene(pane, 1156, 650);
+            Scene scene = new Scene(pane);
             scene.getRoot().requestFocus();
             PrimaryStage.setScene(scene);
             PrimaryStage.show();

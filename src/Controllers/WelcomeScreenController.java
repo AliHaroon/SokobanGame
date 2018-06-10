@@ -21,8 +21,11 @@ public class WelcomeScreenController {
         {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/FXML/Menu.fxml"));
             Pane pane = loader.load();
+            Scene scene = new Scene(pane);
+            scene.getRoot().requestFocus();
+            PrimaryStage.setScene(scene);
             MenuController menuController =  (MenuController) loader.getController();
-            menuController.Show(PrimaryStage, pane);
+            menuController.Show(PrimaryStage);
         }
         catch (IOException e)
         {

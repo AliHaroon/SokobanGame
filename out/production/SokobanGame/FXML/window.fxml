@@ -1,38 +1,41 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-<GridPane xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.LevelController">
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.RadioMenuItem?>
+<?import javafx.scene.control.SeparatorMenuItem?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+
+<GridPane xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.LevelController" onKeyPressed="#handleKey" >
     <MenuBar fx:id="menu" GridPane.rowIndex="0">
         <Menu mnemonicParsing="false" text="File">
-            <MenuItem accelerator="Shortcut+S" mnemonicParsing="false"  text="Save game"
-                      disable="true"/>
-            <MenuItem accelerator="Shortcut+L" mnemonicParsing="false"  text="Load game"/>
-            <SeparatorMenuItem/>
-            <MenuItem mnemonicParsing="false"  text="Exit"/>
+            <MenuItem accelerator="Shortcut+S" disable="true" mnemonicParsing="false" text="Save game" />
+            <MenuItem accelerator="Shortcut+L" mnemonicParsing="false" text="Load game" />
+            <SeparatorMenuItem />
+            <MenuItem mnemonicParsing="false" text="Exit" />
         </Menu>
         <Menu mnemonicParsing="false" text="Level">
-            <MenuItem accelerator="Shortcut+Z" disable="true" mnemonicParsing="false" text="Undo"/>
-            <RadioMenuItem accelerator="Shortcut+M" mnemonicParsing="false"
-                           text="Toggle music"/>
-            <RadioMenuItem accelerator="Shortcut+D" mnemonicParsing="false"
-                           text="Toggle debug"/>
-            <SeparatorMenuItem/>
-            <MenuItem accelerator="Shortcut+R" mnemonicParsing="false"  text="Reset Level"/>
+            <MenuItem accelerator="Shortcut+Z" disable="true" mnemonicParsing="false" text="Undo" />
+            <RadioMenuItem accelerator="Shortcut+M" mnemonicParsing="false" text="Toggle music" />
+            <SeparatorMenuItem />
+            <MenuItem accelerator="Shortcut+R" mnemonicParsing="false" onAction="#resetLevel" text="Reset Level" />
         </Menu>
         <Menu mnemonicParsing="false" text="About">
-            <MenuItem accelerator="Shortcut+A" mnemonicParsing="false"  text="About this game"/>
+            <MenuItem accelerator="Shortcut+A" mnemonicParsing="false" onAction="#showAbout" text="About this game" />
         </Menu>
     </MenuBar>
 
-    <GridPane fx:id="gameGrid" alignment="BOTTOM_CENTER" GridPane.rowIndex="1">
+    <GridPane fx:id="gameGrid" alignment="BOTTOM_CENTER"  GridPane.rowIndex="1">
 
     </GridPane>
     <columnConstraints>
-        <ColumnConstraints/>
+        <ColumnConstraints />
     </columnConstraints>
     <rowConstraints>
-        <RowConstraints/>
-        <RowConstraints/>
+        <RowConstraints />
+        <RowConstraints />
     </rowConstraints>
 </GridPane>
