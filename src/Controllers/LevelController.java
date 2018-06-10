@@ -39,28 +39,12 @@ public class LevelController {
         this.primaryStage = primaryStage;
         InputStream in = getClass().getClassLoader().getResourceAsStream("Levels/" + level + ".skb");
         initializeGame(in);
-        //setEventFilter();
     }
 
     private void initializeGame(InputStream input) {
         gameEngine = new GameEngine(input, true, primaryStage, this);
         currentLevel = gameEngine.getCurrentLevel();
         reloadGrid();
-    }
-
-
-    public void setEventFilter() {
-        EventHandler<KeyEvent> handler = event -> {
-            event.consume();
-            gameEngine.handleKey(event.getCode());
-            reloadGrid();
-        };
-       boolean check = currentLevel.isComplete();
-      if (!check)
-          primaryStage.addEventFilter(KeyEvent.KEY_PRESSED, handler);
-      if (check){
-          primaryStage.removeEventFilter(KeyEvent.KEY_PRESSED, handler);
-      }
     }
 
     @FXML
