@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
+
+<Pane xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.MenuController">
+   <children>
+      <AnchorPane layoutX="-1.0" prefHeight="609.0" prefWidth="1151.0">
+         <children>
+            <ImageView fitHeight="610.0" fitWidth="1151.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../Images/base.png" />
+               </image></ImageView>
+            <Label layoutX="467.0" layoutY="87.0" text="Welcome">
+               <font>
+                  <Font name="Malgun Gothic" size="48.0" />
+               </font>
+            </Label>
+            <ComboBox fx:id="comboBox" layoutX="494.0" layoutY="490.0" prefWidth="150.0" promptText="Select Level" />
+            <Button fx:id="b1" layoutX="526.0" layoutY="556.0" mnemonicParsing="false" prefHeight="33.0" prefWidth="85.0" text="Go" />
+            <ImageView fx:id="image" fitHeight="285.0" fitWidth="414.0" layoutX="376.0" layoutY="174.0" pickOnBounds="true" smooth="false">
+             <image>
+                 <Image url="@../Images/Sample.png" />
+             </image>
+            </ImageView>
+            <Button fx:id="LeaderBoard" layoutX="83.0" layoutY="87.0" mnemonicParsing="false" prefHeight="33.0" prefWidth="97.0" text="LeaderBoard" />
+            <Label fx:id="Label" layoutX="474.0" layoutY="459.0" prefHeight="31.0" prefWidth="203.0" text="Please Select a level" visible="false">
+               <font>
+                  <Font size="21.0" />
+               </font></Label>
+         </children>
+      </AnchorPane>
+   </children>
+</Pane>
