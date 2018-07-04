@@ -372,7 +372,7 @@ public class GameEngine {
                 stopMusic();
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/FXML/Menu.fxml"));
                 Pane pane = loader.load();
-                Scene scene = new Scene(pane, 1156, 650);
+                Scene scene = new Scene(pane, 1150, 610);
                 scene.getRoot().requestFocus();
                 primaryStage.setScene(scene);
                 MenuController menuController =  (MenuController) loader.getController();
